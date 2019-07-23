@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<style>
+    #container {
+        width: 1400px;
+        height: 200px;
+        position: relative;
+        background: rgb(7, 211, 24);
+    }
+    
+    #caballo1 {
+        width: 100px;
+        height: 100px;
+        position: absolute;
+    }
+    
+    #caballo2 {
+        width: 100px;
+        height: 100px;
+        position: absolute;
+    }
+</style>
+
+<body>
+    <h1>CARRERA DE CABALLOS</h1>
+
+    <input type="button" value="jugador 1" id="jugador 1" onclick=""><input type="text" name="c1" id="c1"><input type="text" name="avanzar1" id="avanzar1">
+    <br><br>
+    <input type="button" value="jugador 2" id="jugador 2" onclick=""><input type="text" name="c2" id="c2"><input type="text" name="avanzar2" id="avanzar2">
+    <br><br>
+    <input type="button" value="ganador" id="btnganador"><input type="text" name="g" id="g"><input type="text" name="h" id="h">
+    <br><br>
+
+    <div id="container">
+
+        <img src="imagenes/caballo1.gif" id="caballo1">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <img src="imagenes/caballo2.gif" id="caballo2">
+    </div>
+</body>
+<script src="caballo1.js"></script>
+<script>
+    var j1 = new Caballo("Pegaso ", 11);
+    var j2 = new Caballo("Black Panter ", 8);
+
+    function audio(link) {
+
+        var reproducir = new Audio();
+        reproducir.src = link;
+        reproducir.play();
+    }
+    document.getElementById("jugador 1").addEventListener("click", function() {
+        document.getElementById("c1").value = j1.nombre + " avanzó ";
+        document.getElementById("avanzar1").value = j1.avanzar();
+        myMove(0);
+        audio("sonido/cab1.mp3");
+
+    });
+
+    document.getElementById("jugador 2").addEventListener("click", function() {
+        document.getElementById("c2").value = j2.nombre + " avanzó ";
+        document.getElementById("avanzar2").value = j2.avanzar();
+        myMove1(0);
+        audio("sonido/cab2.mp3");
+    });
+
+    document
+        .getElementById("btnganador")
+        .addEventListener("dblclick", function() {
+
+            if (j1.obtenerTotalRecorrido() > j2.obtenerTotalRecorrido()) {
+                audio("sonido/win.mp3");
+                alert("Jugador " + j1.nombre + " ganó. ");
+
+
+            } else {
+                if (j1.obtenerTotalRecorrido() < j2.obtenerTotalRecorrido()) {
+                    audio("sonido/win.mp3");
+                    alert("jugador " + j2.nombre + " ganó. ");
+
+                } else {
+                    audio("sonido/empate.mp3");
+                    alert("nadie gana, empate");
+                }
+            }
+            document.getElementById("g").value = j1.nombre + "obtuvo:" + j1.obtenerTotalRecorrido();
+            document.getElementById("h").value = j2.nombre + "obtuvo:" + j2.obtenerTotalRecorrido();
+        });
+
+    function myMove(inicio) {
+        var elem = document.getElementById("caballo1");
+        var pos = inicio;
+        var id = setInterval(frame, 1);
+
+        function frame() {
+            var recorrido = j1.obtenerTotalRecorrido() * 50;
+            if (pos === recorrido) {
+                clearInterval(id);
+            } else {
+                pos++;
+                elem.style.left = pos + "px";
+            }
+
+        }
+    }
+
+    function myMove1(inicio) {
+        var elem = document.getElementById("caballo2");
+        var pos = inicio;
+        var id = setInterval(frame, 1);
+
+        function frame() {
+            var recorrido1 = j2.obtenerTotalRecorrido() * 50;
+            if (pos == recorrido1) {
+                clearInterval(id);
+
+            } else {
+                pos++;
+                elem.style.left = pos + "px";
+
+
+            }
+        }
+    }
+</script>
+
+</html>
